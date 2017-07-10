@@ -4,9 +4,9 @@
 
 CCruiser::CCruiser()
 {
-	shipSize = 3;
-	durabilitySize = shipSize;
-	name = "Cruiser";
+	m_ShipSize = 3;
+	m_DurabilitySize = m_ShipSize;
+	m_Name = "Cruiser";
 }
 
 

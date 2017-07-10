@@ -4,9 +4,9 @@
 
 CBattleShip::CBattleShip()
 {
-	shipSize = 4;
-	durabilitySize = shipSize;
-	name = "Battle Ship";
+	m_ShipSize = 4;
+	m_DurabilitySize = m_ShipSize;
+	m_Name = "Battle Ship";
 }
 
 

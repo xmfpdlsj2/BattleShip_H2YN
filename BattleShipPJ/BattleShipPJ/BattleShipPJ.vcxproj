@@ -148,6 +148,7 @@
     <ClCompile Include="Destroyer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Submarine.cpp" />
   </ItemGroup>
@@ -157,8 +158,10 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cruiser.h" />
     <ClInclude Include="Destroyer.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Position.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Submarine.h" />
   </ItemGroup>

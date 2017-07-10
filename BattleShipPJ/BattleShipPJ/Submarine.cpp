@@ -4,9 +4,9 @@
 
 CSubmarine::CSubmarine()
 {
-	shipSize = 1;
-	durabilitySize = shipSize;
-	name = "Submarine";
+	m_ShipSize = 1;
+	m_DurabilitySize = m_ShipSize;
+	m_Name = "Submarine";
 }
 
 

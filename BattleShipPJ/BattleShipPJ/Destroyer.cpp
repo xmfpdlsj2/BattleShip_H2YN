@@ -4,9 +4,9 @@
 
 CDestroyer::CDestroyer()
 {
-	shipSize = 2;
-	durabilitySize = shipSize;
-	name = "Destroyer";
+	m_ShipSize = 2;
+	m_DurabilitySize = m_ShipSize;
+	m_Name = "Destroyer";
 }
 
 
