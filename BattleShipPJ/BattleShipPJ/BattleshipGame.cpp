@@ -12,6 +12,7 @@
 #include"Cruiser.h"
 #include"Destroyer.h"
 #include"Submarine.h"
+#include"Player.h"
 //
 //
 //enum HitResult
@@ -173,10 +174,11 @@
 
 void PrintShipState(CShip ship)
 {
-
-	std::cout << ship.GetName() << " is HP : " << ship.GetDurabilitySize() 
-		<< ", TYPE : " << ship.GetShipType() << std::endl;
+	printf("%s is HP : %d, TYPE : %d\n", 
+		ship.GetName().c_str(), ship.GetDurabilitySize(), ship.GetShipType());
 }
+
+
 
 int main()
 {
@@ -191,6 +193,56 @@ int main()
 	PrintShipState(cruiser);
 	PrintShipState(destroyer);
 	PrintShipState(submarine);
+
+
+	aircraft.AddPosition(Position('A', '1'));
+	aircraft.AddPosition(Position('A', '2'));
+	aircraft.AddPosition(Position('A', '3'));
+	aircraft.AddPosition(Position('A', '4'));
+	aircraft.AddPosition(Position('A', '5'));
+
+	aircraft.PrintShipPosition();
+
+	Position hitPositions[5] = { Position('A', '1'),Position('A', '2'),Position('A', '3'),Position('A', '4'),Position('A', '5') };
+	
+	int length = sizeof(hitPositions) / sizeof(Position);
+	EHitState hitState;
+
+	for (int i = 0; i < length; i++)
+	{
+		hitState = aircraft.HitCheck(hitPositions[i]);
+		switch (hitState)
+		{
+		case NONE:
+			break;
+		case MISS:
+			std::cout << "miss" << std::endl;
+			break;
+		case HIT:
+			std::cout << "hit" << std::endl;
+			break;
+		case DESTROY:
+			std::cout << "destroy" << std::endl;
+			break;
+		case A:
+			break;
+		case B:
+			break;
+		case C:
+			break;
+		case D:
+			break;
+		case S:
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	CPlayer player;
+
+	player.PrintShipVector();
 
 	getchar();
 

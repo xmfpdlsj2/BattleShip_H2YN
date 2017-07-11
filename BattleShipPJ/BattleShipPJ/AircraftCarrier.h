@@ -6,5 +6,7 @@ class CAircraftCarrier :
 public:
 	CAircraftCarrier();
 	virtual ~CAircraftCarrier();
+	
+	virtual void PrintTest();
 };
 

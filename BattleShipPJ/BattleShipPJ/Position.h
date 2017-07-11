@@ -7,5 +7,6 @@ struct Position
 
 public :
 	Position();
+	Position(char xpos, char ypos);
 	virtual ~Position();
 };

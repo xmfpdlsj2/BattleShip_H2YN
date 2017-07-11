@@ -14,3 +14,9 @@ CAircraftCarrier::CAircraftCarrier()
 CAircraftCarrier::~CAircraftCarrier()
 {
 }
+
+void CAircraftCarrier::PrintTest()
+{
+	std::cout << "AircraftCarrier" << std::endl;
+}
+

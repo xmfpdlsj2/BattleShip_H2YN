@@ -6,5 +6,6 @@ class CBattleShip :
 public:
 	CBattleShip();
 	virtual ~CBattleShip();
+	virtual void PrintTest();
 };
 

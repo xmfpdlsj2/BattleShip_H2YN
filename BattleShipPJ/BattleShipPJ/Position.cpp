@@ -5,6 +5,12 @@ Position::Position() {
 	y = '0';
 }
 
+Position::Position(char xpos, char ypos)
+{
+	x = xpos;
+	y = ypos;
+}
+
 Position::~Position() {
 
 }

@@ -44,3 +44,16 @@ void CShip::AddPosition(Position position)
 	m_ShipPosition.push_back(position);
 
 }
+
+void CShip::PrintShipPosition()
+{
+	for (int i = 0; i < (int)m_ShipPosition.size(); i++)
+	{
+		printf("%s Position[%d] - %c%c\n", m_Name.c_str(), i, m_ShipPosition[i].x, m_ShipPosition[i].y);
+	}
+}
+
+void CShip::PrintTest()
+{
+	std::cout << "Ship" << std::endl;
+}
