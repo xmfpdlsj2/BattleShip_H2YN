@@ -7,6 +7,7 @@ CSubmarine::CSubmarine()
 	m_ShipSize = 1;
 	m_DurabilitySize = m_ShipSize;
 	m_Name = "Submarine";
+	m_ShipType = SUBMARINE;
 }
 
 
