@@ -13,4 +13,13 @@ CBattleShip::CBattleShip()
 
 CBattleShip::~CBattleShip()
 {
+
 }
+
+//Many people are deciding their lunch menu after they are looking at the menu board.
+
+//After접속사는 시점을 의미합니다. 그런데 after 다음에 현재진행형이 오는 경우는 없습니다.
+
+//
+
+

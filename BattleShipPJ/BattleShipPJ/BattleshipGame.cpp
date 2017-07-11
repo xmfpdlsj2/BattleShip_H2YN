@@ -1,12 +1,17 @@
-//#include<stdio.h>
-//#include<stdlib.h>
-//#include<iostream>
-//#include<time.h>
-//#include<vector>
-//#include<list>
-//#include<string>
-////#include<ctime>
-//using namespace std;
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
+#include<time.h>
+#include<vector>
+#include<list>
+#include<string>
+#include<ctime>
+#include"Ship.h"
+#include"AircraftCarrier.h"
+#include"BattleShip.h"
+#include"Cruiser.h"
+#include"Destroyer.h"
+#include"Submarine.h"
 //
 //
 //enum HitResult
@@ -165,7 +170,29 @@
 //		break;
 //	}
 //}
+
+void PrintShipState(CShip ship)
+{
+
+	std::cout << ship.GetName() << " is HP : " << ship.GetDurabilitySize() 
+		<< ", TYPE : " << ship.GetShipType() << std::endl;
+}
+
 int main()
 {
+	CAircraftCarrier aircraft;
+	CBattleShip battleShip;
+	CCruiser cruiser;
+	CDestroyer destroyer;
+	CSubmarine submarine;
+
+	PrintShipState(aircraft);
+	PrintShipState(battleShip);
+	PrintShipState(cruiser);
+	PrintShipState(destroyer);
+	PrintShipState(submarine);
+
+	getchar();
+
 	return 0;
 }

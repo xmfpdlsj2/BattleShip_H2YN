@@ -14,6 +14,12 @@ public:
 	virtual EHitState HitCheck(Position hitPosition);
 	void AddPosition(Position position);
 
+	EShipType GetShipType() { return m_ShipType; }
+	int GetDurabilitySize() { return m_DurabilitySize; }
+	std::vector<Position> GetShipPosition() { return m_ShipPosition; }
+	std::string GetName() { return m_Name; }
+
+
 protected:
 
 	EShipType m_ShipType;
