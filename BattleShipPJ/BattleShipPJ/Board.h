@@ -7,7 +7,9 @@ public:
 	CBoard();
 	virtual ~CBoard();
 	
-	EHitState map[8][8] ={NONE,};		//¸Ê ¼±¾ð
-
+	EHitState GetMapPosition(int x, int y) { return m_Map[x][y]; }
+	
+protected:
+	EHitState m_Map[8][8] ={NONE,};		//¸Ê ¼±¾ð
 };
 
