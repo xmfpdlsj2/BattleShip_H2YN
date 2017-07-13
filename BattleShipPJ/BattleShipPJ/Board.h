@@ -7,7 +7,8 @@ public:
 	CBoard();
 	virtual ~CBoard();
 	
-	EHitState GetMapPosition(int x, int y) { return m_Map[x][y]; }
+	EHitState GetMapPosition(int x, int y) { return m_Map[y][x]; }
+	void SetMapPosition(int x, int y, EHitState hitState) { m_Map[y][x] = hitState; }
 	int GetMapSize() { return m_MapSize; }
 	
 protected:

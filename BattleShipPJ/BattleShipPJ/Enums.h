@@ -21,3 +21,8 @@ enum EShipType
 	SUBMARINE,
 };
 
+enum ELineType
+{
+	ROW,
+	COLUMN
+};

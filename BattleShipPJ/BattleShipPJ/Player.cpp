@@ -34,41 +34,43 @@ void CPlayer::PlaceShip()
 	{
 		for (auto i = 0; i < pShip->GetDurabilitySize(); i++)
 		{
-			int x = rand() % 8;
-			int y = rand() % 8;
-			Position position;
-			position.x = (char)(x + 'A');
-			position.y = (char)(y + '0');
-			if (i == 0)
+			while (1) //Position 맞는거 나올때까지 반복
 			{
-				if (m_PlayerBoard.GetMapPosition(x,y) == NONE)
-				{
-					for (auto i = 0; i < pShip->GetDurabilitySize(); i++)
-					{
-						if (m_PlayerBoard.GetMapPosition(x, y) && eastPossible)
-						{
-
-						}
-						if (m_PlayerBoard.GetMapPosition(x, y) && westPossible)
-						{
-
-						}
-						if (m_PlayerBoard.GetMapPosition(x, y) && southPossible)
-						{
-
-						}
-						if (m_PlayerBoard.GetMapPosition(x, y) && northPossible)
-						{
-
-						}
-					}
-				}
+				int x = rand() % 8;
+				int y = rand() % 8;
+				Position position;
+				position.x = (char)(x + '0');
+				position.y = (char)(y + 'A');
 				
-
-			}
+				if (_CheckPossiblePosition(pShip, position)) {
+					pShip->AddPosition(position);
+					switch (pShip->GetShipType())
+					{
+					case AIRCRAFT_CARRIER:
+						m_PlayerBoard.SetMapPosition(x, y, A);
+						break;
+					case BATTLESHIP:
+						m_PlayerBoard.SetMapPosition(x, y, B);
+						break;
+					case CRUISER:
+						m_PlayerBoard.SetMapPosition(x, y, C);
+						break;
+					case DESTROYER:
+						m_PlayerBoard.SetMapPosition(x, y, D);
+						break;
+					case SUBMARINE:
+						m_PlayerBoard.SetMapPosition(x, y, S);
+						break;
+					default:
+						break;
+					}
+					printf("Input Position Of %s (%c,%c)\n", pShip->GetName().c_str(), position.x, position.y);
+					break;
+				}
+				printf("Wrong Input Position Of %s (%c,%c)\n", pShip->GetName().c_str(), position.x, position.y);
+			} 
 		}
 
-		pShip;
 	}
 }
 
@@ -82,8 +84,10 @@ void CPlayer::PrintShipVector()
 
 bool CPlayer::_CheckPossiblePosition(CShip * pShip, Position position)
 {
-	int x = (int)(position.x - 'A');
-	int y = (int)(position.y - '0');
+	// 가로 가능한지 세로 가능한지를 static으로 기억해놓으면 더 좋을까?!!
+
+	int x = (int)(position.x - '0');
+	int y = (int)(position.y - 'A');
 
 	if (m_PlayerBoard.GetMapPosition(x, y) != NONE) // 가져온 좌표 가능한지 안한지
 	{
@@ -92,39 +96,114 @@ bool CPlayer::_CheckPossiblePosition(CShip * pShip, Position position)
 
 	if (pShip->GetShipPosition().empty()) // 배에 하나도 포지션 넣지 않았을 경우
 	{
-		bool westPossible = true, eastPossible = true;
-		int count = 1; // 가져온 좌표는 가능하니까
+		if (_CheckPossibleLine(position, pShip->GetDurabilitySize(), ROW))
+			return true;
+		if (_CheckPossibleLine(position, pShip->GetDurabilitySize(), COLUMN))
+			return true;
 
-		for (auto i = 0; i < pShip->GetDurabilitySize(); i++) // 가로로 가능한 칸 확보가 가능한지 검사
+		return false; // 가로 세로 둘 다 안될 때
+	}
+	else
+	{
+		if (pShip->GetShipPosition().size() == 1) // 배에 포지션 하나 저장되어 있을 경우
 		{
-			if (eastPossible && (y + i) < m_PlayerBoard.GetMapSize() && m_PlayerBoard.GetMapPosition(x, y + i) == NONE)
+			Position alreadyExistPosition = pShip->GetShipPosition()[0];
+
+			if (abs((int)(alreadyExistPosition.x - position.x)) == 1 &&
+				(int)(alreadyExistPosition.y - position.y) == 0) // 원래 있던 x랑 검사할 x랑 하나 차이 날 때(가로일 때)
 			{
-				++count;
+				if (_CheckPossibleLine(alreadyExistPosition, pShip->GetDurabilitySize(), ROW)) // 검사할 때 이미 저장되어 있는 포지션으로 검사해봐야함!
+					return true;
+			}
+			else if (abs((int)(alreadyExistPosition.y - position.y)) == 1 &&
+				(int)(alreadyExistPosition.x - position.x) == 0) // 원래 있던 y랑 검사할 y랑 하나 차이 날 때(세로일 때)
+			{
+				if (_CheckPossibleLine(alreadyExistPosition, pShip->GetDurabilitySize(), COLUMN))
+					return true;
 			}
 			else
-			{
-				eastPossible = false;
-			}
+				return false;
 
-			if (westPossible && (y - i) >= 0 && m_PlayerBoard.GetMapPosition(x, y - i) == NONE)
-			{
-				++count;
-			}
-			else
-			{
-				westPossible = false;
-			}
-
-			if (count == pShip->GetDurabilitySize())
-				return true;
+			return false;
 		}
-
-		bool northPossible = true, southPossible = true;
-		count = 1;
-
-		for (auto i = 0; i < pShip->GetDurabilitySize(); i++) // 세로로 가능한 칸 확보가 가능한지 검사
+		else // 배에 포지션 두개 이상 저장되어 있을 경우
 		{
-			if (eastPossible && (x + i) < m_PlayerBoard.GetMapSize() && m_PlayerBoard.GetMapPosition(x + i, y) == NONE)
+			ELineType lineType;
+			char min, max;
+
+			if (pShip->GetShipPosition()[0].y == pShip->GetShipPosition()[1].y)
+			{
+				lineType = ROW;
+				min = pShip->GetShipPosition()[0].x, max = pShip->GetShipPosition()[0].x;
+			}
+			if (pShip->GetShipPosition()[0].x == pShip->GetShipPosition()[1].x)
+			{
+				lineType = COLUMN;
+				min = pShip->GetShipPosition()[0].y, max = pShip->GetShipPosition()[0].y;
+			}
+
+			if (lineType == ROW)
+			{
+				for (int i = 1; i < (int)pShip->GetShipPosition().size(); i++)
+				{
+					if (pShip->GetShipPosition()[i].x < min)
+						min = pShip->GetShipPosition()[i].x;
+					if (pShip->GetShipPosition()[i].x > max)
+						max = pShip->GetShipPosition()[i].x;
+				}
+
+				if ((int)(min - position.x) == 1 || (int)(position.x - max) == 1)
+				{
+					return true;
+				}
+				else
+					return false;
+			}
+			else if (lineType == COLUMN)
+			{
+				for (int i = 1; i < (int)pShip->GetShipPosition().size(); i++)
+				{
+					if (pShip->GetShipPosition()[i].y < min)
+						min = pShip->GetShipPosition()[i].y;
+					if (pShip->GetShipPosition()[i].y > max)
+						max = pShip->GetShipPosition()[i].y;
+				}
+
+				if ((int)(min - position.y) == 1 || (int)(position.y - max) == 1)
+				{
+					return true;
+				}
+				else
+					return false;
+			}
+			else
+			{
+				printf("Line Type is error at line num %d in %s in %s\n", __LINE__, __FUNCTION__, __FILE__);
+				return false;
+			}
+
+			return false;
+		}
+	}
+
+	return false;
+}
+
+bool CPlayer::_CheckPossibleLine(Position checkPosition, int shipSize, ELineType lineType)
+{
+	int x = (int)(checkPosition.x - '0');
+	int y = (int)(checkPosition.y - 'A');
+
+	int count = 1; // 검사할 현재 포지션은 넣기 가능하다는 전제 때문에
+	int mapSize = m_PlayerBoard.GetMapSize();
+
+	if (lineType == ROW)
+	{
+		bool westPossible = true, eastPossible = true;
+
+		for (auto i = 1; i < shipSize; i++) // 가로로 가능한 칸 확보가 가능한지 검사
+		{
+			if (eastPossible && (x + i) < mapSize && m_PlayerBoard.GetMapPosition(x + i, y) == NONE)
 			{
 				++count;
 			}
@@ -142,22 +221,42 @@ bool CPlayer::_CheckPossiblePosition(CShip * pShip, Position position)
 				westPossible = false;
 			}
 
-			if (count == pShip->GetDurabilitySize())
+			if (count >= shipSize)
 				return true;
 		}
-		return false; // 가로 세로 둘 다 안될 때
+		return false;
+	}
+	else if (lineType == COLUMN)
+	{
+		bool northPossible = true, southPossible = true;
+
+		for (auto i = 1; i < shipSize; i++) // 세로로 가능한 칸 확보가 가능한지 검사
+		{
+			if (southPossible && (y + i) < mapSize && m_PlayerBoard.GetMapPosition(x, y + i) == NONE)
+			{
+				++count;
+			}
+			else
+			{
+				southPossible = false;
+			}
+
+			if (northPossible && (y - i) >= 0 && m_PlayerBoard.GetMapPosition(x, y - i) == NONE)
+			{
+				++count;
+			}
+			else
+			{
+				northPossible = false;
+			}
+
+			if (count >= shipSize)
+				return true;
+		}
+		return false;
 	}
 	else
-	{
-		if (pShip->GetShipPosition().size() == 1) // 배에 포지션 하나 저장되어 있을 경우
-		{
-
-		}
-		else
-		{
-
-		}
-	}
+		return false;
 
 	return false;
 }

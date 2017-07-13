@@ -27,5 +27,6 @@ protected:
 	CBoard m_EnemyBoard;
 
 	bool _CheckPossiblePosition(CShip* pShip, Position position);
+	bool _CheckPossibleLine(Position checkPosition, int shipSize, ELineType lineType);
 };
 

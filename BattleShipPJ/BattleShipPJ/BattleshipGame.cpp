@@ -178,8 +178,6 @@ void PrintShipState(CShip ship)
 		ship.GetName().c_str(), ship.GetDurabilitySize(), ship.GetShipType());
 }
 
-
-
 int main()
 {
 	CAircraftCarrier aircraft;
@@ -189,8 +187,15 @@ int main()
 	CSubmarine submarine;
 
 	CPlayer player;
+	player.PlaceShip();
 
-
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			std::cout << player.GetPlayerBoard().GetMapPosition(j, i) << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "4 : A, 5 : B, 6 : C, 7 : D, 8 : S" << std::endl;
 	getchar();
 
 	return 0;

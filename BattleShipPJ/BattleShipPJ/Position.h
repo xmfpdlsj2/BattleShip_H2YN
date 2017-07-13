@@ -2,8 +2,8 @@
 
 struct Position
 {
-	char x;
-	char y;
+	char x; // 숫자
+	char y; // 영어
 
 public :
 	Position();
