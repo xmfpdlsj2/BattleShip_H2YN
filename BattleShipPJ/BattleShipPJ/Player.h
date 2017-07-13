@@ -4,6 +4,7 @@
 
 //클래스 전방선언
 class CShip;
+class Position;
 
 class CPlayer
 {
@@ -24,5 +25,7 @@ public:
 protected:
 	CBoard m_PlayerBoard;
 	CBoard m_EnemyBoard;
+
+	bool _CheckPossiblePosition(CShip* pShip, Position position);
 };
 
