@@ -63,8 +63,6 @@ void CPlayer::PlaceShip()
 						}
 					}
 				}
-				
-
 			}
 		}
 
