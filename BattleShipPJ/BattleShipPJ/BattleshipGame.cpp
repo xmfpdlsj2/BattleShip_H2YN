@@ -180,6 +180,8 @@ void PrintShipState(CShip ship)
 
 int main()
 {
+	srand((unsigned)time(NULL));
+
 	CAircraftCarrier aircraft;
 	CBattleShip battleShip;
 	CCruiser cruiser;
@@ -195,7 +197,8 @@ int main()
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "4 : A, 5 : B, 6 : C, 7 : D, 8 : S" << std::endl;
+	std::cout << "1 : A, 2 : B, 3 : C, 4 : D, 5 : S" << std::endl;
+
 	getchar();
 
 	return 0;

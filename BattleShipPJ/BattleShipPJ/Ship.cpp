@@ -22,12 +22,14 @@ EHitState CShip::HitCheck(Position hitPosition)
 			m_ShipPosition.erase(it);
 
 			if (m_DurabilitySize == 0)
-				return DESTROY;
+			{
+				// TODO : 디스트로이 됐을때 알아서 쉽 타입 가져와서 뭐 디스트로이 반환
+			}
 			else
-				return HIT;
+				return HIT_HIT;
 		}
 	}
-	return MISS;
+	return HIT_MISS;
 }
 
 void CShip::AddPosition(Position position)

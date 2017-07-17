@@ -4,7 +4,7 @@
 
 //클래스 전방선언
 class CShip;
-class Position;
+struct Position;
 
 class CPlayer
 {
@@ -26,7 +26,7 @@ protected:
 	CBoard m_PlayerBoard;
 	CBoard m_EnemyBoard;
 
-	bool _CheckPossiblePosition(CShip* pShip, Position position);
-	bool _CheckPossibleLine(Position checkPosition, int shipSize, ELineType lineType);
+	void _InsertPosition(CShip* pShip);
+
 };
 
