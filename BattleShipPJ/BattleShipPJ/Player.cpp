@@ -38,10 +38,21 @@ void CPlayer::PlaceShip()
 Position CPlayer::Attack()
 {
 	Position attackPosition;
+	
 	attackPosition.x = rand() % 8 + '1';
 	attackPosition.y = rand() % 8 + 'A';
 
-	return attackPosition;
+	int fireCheck = 0;
+	fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
+
+	if (fireCheck == 0)
+	{
+		m_PlayerHitCheckBoard.SetMapHitState(attackPosition.x, attackPosition.y);
+		return attackPosition;
+
+	}
+		
+	return Attack();
 }
 
 EHitState CPlayer::OnHitResult(EHitState hitresult)

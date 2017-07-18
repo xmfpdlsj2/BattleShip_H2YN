@@ -28,6 +28,7 @@ public:
 
 protected:
 	CBoard m_PlayerBoard;
+	CBoard m_PlayerHitCheckBoard;
 	CBoard m_EnemyBoard;
 
 	void _InsertPosition(CShip* pShip);
