@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Submarine.h"
 #include<string>
 
@@ -13,4 +14,13 @@ CSubmarine::CSubmarine()
 
 CSubmarine::~CSubmarine()
 {
+}
+
+EHitState CSubmarine::HitCheck(Position hitPosition)
+{
+	EHitState hitstate = CShip::HitCheck(hitPosition);
+
+	if (hitstate == HIT_DESTROY)
+		return HIT_DESTROY_DESTROYER;
+	return hitstate;
 }

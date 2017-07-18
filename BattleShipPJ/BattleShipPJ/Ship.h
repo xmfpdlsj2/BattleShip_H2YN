@@ -20,6 +20,7 @@ public:
 	EShipType GetShipType() { return m_ShipType; }
 	int GetDurabilitySize() { return m_DurabilitySize; }
 	std::vector<Position> GetShipPosition() { return m_ShipPosition; }
+	std::vector<Position> SetShipPosition(Position position);
 	std::string GetName() { return m_Name; }
 
 	

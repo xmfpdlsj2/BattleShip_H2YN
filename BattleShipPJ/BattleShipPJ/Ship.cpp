@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Ship.h"
 
 
@@ -23,6 +24,7 @@ EHitState CShip::HitCheck(Position hitPosition)
 
 			if (m_DurabilitySize == 0)
 			{
+				return HIT_DESTROY;
 				// TODO : 디스트로이 됐을때 알아서 쉽 타입 가져와서 뭐 디스트로이 반환
 			}
 			else
@@ -58,4 +60,10 @@ void CShip::PrintShipPosition()
 void CShip::PrintTest()
 {
 	std::cout << "Ship" << std::endl;
+}
+
+std::vector<Position> CShip::SetShipPosition(Position position)
+{
+	m_ShipPosition.push_back(position);
+	return std::vector<Position>();
 }

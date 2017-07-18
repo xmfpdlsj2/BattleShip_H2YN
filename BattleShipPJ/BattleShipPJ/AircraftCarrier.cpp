@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "AircraftCarrier.h"
 #include <string>
 
@@ -19,4 +20,14 @@ void CAircraftCarrier::PrintTest()
 {
 	std::cout << "AircraftCarrier" << std::endl;
 }
+
+EHitState CAircraftCarrier::HitCheck(Position hitPosition)
+{
+	EHitState hitstate = CShip::HitCheck(hitPosition);
+
+	if (hitstate == HIT_DESTROY)
+		return HIT_DESTROY_AIRCRAFT_CARRIER;
+	return hitstate;
+}
+
 

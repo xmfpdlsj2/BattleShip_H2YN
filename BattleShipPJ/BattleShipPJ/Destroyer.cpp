@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Destroyer.h"
 #include <string>
 
@@ -14,3 +15,13 @@ CDestroyer::CDestroyer()
 CDestroyer::~CDestroyer()
 {
 }
+
+EHitState CDestroyer::HitCheck(Position hitPosition)
+{
+	EHitState hitstate = CShip::HitCheck(hitPosition);
+
+	if (hitstate == HIT_DESTROY)
+		return HIT_DESTROY_DESTROYER;
+	return hitstate;
+}
+	

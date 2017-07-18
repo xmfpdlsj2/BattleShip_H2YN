@@ -14,9 +14,13 @@ public:
 
 	std::vector<CShip*> pShipVector;
 	 
-	void InitShipList(); // 가져온 배들을 초기화
 	void PlaceShip();	 // 맵에 배를 배치 각 배에다가 map 좌표값을 넣어줌.
-	void Attack();		//공격
+	Position Attack();		//공격
+	EHitState OnHitResult(EHitState hitresult);
+
+	EHitState DeffendHitCheck(Position hitposition);
+
+	bool GameEndCheck();
 	void PrintShipVector();
 
 	CBoard GetPlayerBoard() { return m_PlayerBoard; }

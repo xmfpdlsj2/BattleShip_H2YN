@@ -8,5 +8,6 @@ public:
 	virtual ~CAircraftCarrier();
 	
 	virtual void PrintTest();
+	virtual EHitState HitCheck(Position hitPosition);
 };
 

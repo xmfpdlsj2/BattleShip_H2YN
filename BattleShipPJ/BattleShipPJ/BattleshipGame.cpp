@@ -1,18 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<iostream>
-#include<time.h>
-#include<vector>
-#include<list>
-#include<string>
-#include<ctime>
-#include"Ship.h"
-#include"AircraftCarrier.h"
-#include"BattleShip.h"
-#include"Cruiser.h"
-#include"Destroyer.h"
-#include"Submarine.h"
-#include"Player.h"
+#include "stdafx.h"
+#include "GameManager.h"
+#include "Ship.h"
 //
 //
 //enum HitResult
@@ -182,22 +170,17 @@ int main()
 {
 	srand((unsigned)time(NULL));
 
-	CAircraftCarrier aircraft;
+	/*CAircraftCarrier aircraft;
 	CBattleShip battleShip;
 	CCruiser cruiser;
 	CDestroyer destroyer;
-	CSubmarine submarine;
+	CSubmarine submarine;*/
 
-	CPlayer player;
-	player.PlaceShip();
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			std::cout << player.GetPlayerBoard().GetMapPosition(j, i) << " ";
-		}
-		std::cout << std::endl;
-	}
-	std::cout << "1 : A, 2 : B, 3 : C, 4 : D, 5 : S" << std::endl;
+	CGameManager gameManager;
+	gameManager.Init();
+	gameManager.Start();
+	
+		
 
 	getchar();
 

@@ -8,5 +8,7 @@ class CSubmarine :
 public:
 	CSubmarine();
 	virtual ~CSubmarine();
+
+	virtual EHitState HitCheck(Position hitPosition);
 };
 

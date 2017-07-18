@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Player.h"
 #include "AircraftCarrier.h"
 #include "BattleShip.h"
@@ -26,11 +27,6 @@ CPlayer::~CPlayer()
 }
 
 
-
-
-
-
-
 void CPlayer::PlaceShip()
 {
 	for (auto pShip : pShipVector)
@@ -39,6 +35,48 @@ void CPlayer::PlaceShip()
 	}
 }
 
+Position CPlayer::Attack()
+{
+	Position attackPosition;
+	attackPosition.x = rand() % 8 + '1';
+	attackPosition.y = rand() % 8 + 'A';
+
+	return attackPosition;
+}
+
+EHitState CPlayer::OnHitResult(EHitState hitresult)
+{
+	//todo : 맵에 히트한 곳 표시
+	//게임 끝날 때까지 반복 AI
+	return hitresult;
+}
+
+EHitState CPlayer::DeffendHitCheck(Position hitposition)
+{
+	EHitState hitState;
+
+	for (auto pShip : pShipVector)
+	{
+		hitState = pShip->HitCheck(hitposition);
+		if (hitState != HIT_MISS)
+			return hitState;
+	}
+
+	return HIT_MISS;
+
+}
+
+
+bool CPlayer::GameEndCheck()
+{
+	for (auto pShip : pShipVector)
+	{
+		if (pShip->GetDurabilitySize() != 0)
+			return true;
+	}
+	
+	return false;	
+}
 
 void CPlayer::PrintShipVector()
 {
@@ -84,6 +122,7 @@ void CPlayer::_InsertPosition(CShip * pShip)
 			{
 				temp = position + DIR_ARRAY[dir] * j;
 				m_PlayerBoard.SetMapPosition(temp.x, temp.y, pShip->GetShipType());
+				pShip->SetShipPosition(temp);
 				if (j == pShip->GetDurabilitySize() - 1)
 					return;
 			}
