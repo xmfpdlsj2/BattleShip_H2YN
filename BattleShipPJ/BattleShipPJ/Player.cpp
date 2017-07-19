@@ -35,31 +35,50 @@ void CPlayer::PlaceShip()
 	}
 }
 
-Position CPlayer::Attack()
+Position CPlayer::GetAttackPosition(Position position,EHitState hitState)
 {
 	Position attackPosition;
-	
+	EHitState fireCheck = HIT_NONE;
+
+	/*if (hitState == HIT_HIT)
+	{
+		attackPosition = position;
+
+		for (int i = 0; i < DIR_NONE_MAX; i++)
+		{
+			attackPosition = attackPosition + DIR_ARRAY[i];
+			if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
+			{
+				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
+
+				if (fireCheck == HIT_NONE)
+					return attackPosition;
+			}
+			
+		}		
+
+	}*/
+
 	attackPosition.x = rand() % 8 + '1';
 	attackPosition.y = rand() % 8 + 'A';
 
-	int fireCheck = 0;
 	fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
-
-	if (fireCheck == 0)
-	{
-		m_PlayerHitCheckBoard.SetMapHitState(attackPosition.x, attackPosition.y);
+	
+	if (fireCheck == HIT_NONE)
+	{		
 		return attackPosition;
-
 	}
 		
-	return Attack();
+	return GetAttackPosition(position, hitState);
 }
 
-EHitState CPlayer::OnHitResult(EHitState hitresult)
+EHitState CPlayer::OnHitResult(Position position, EHitState hitResult)
 {
-	//todo : 맵에 히트한 곳 표시
-	//게임 끝날 때까지 반복 AI
-	return hitresult;
+
+	m_PlayerHitCheckBoard.SetMapHitState(position.x, position.y,hitResult);
+	
+
+	return hitResult;
 }
 
 EHitState CPlayer::DeffendHitCheck(Position hitposition)

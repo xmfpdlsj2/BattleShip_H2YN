@@ -15,8 +15,8 @@ public:
 	std::vector<CShip*> pShipVector;
 	 
 	void PlaceShip();	 // 맵에 배를 배치 각 배에다가 map 좌표값을 넣어줌.
-	Position Attack();		//공격
-	EHitState OnHitResult(EHitState hitresult);
+	Position GetAttackPosition(Position position, EHitState hitState);		//공격
+	EHitState OnHitResult(Position position,EHitState hitresult);
 
 	EHitState DeffendHitCheck(Position hitposition);
 
