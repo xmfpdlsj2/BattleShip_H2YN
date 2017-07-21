@@ -40,6 +40,19 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState)
 	Position attackPosition;
 	EHitState fireCheck = HIT_NONE;
 
+	switch (EChaseCase chaseCase = SEEK)
+	{
+	case SEEK:
+		break;
+	case FIRST_HIT:
+		break;
+	case CHASE_SEEK:
+		break;
+	case CHASE_FIRE:
+		break;
+	default:
+		break;
+	}
 	/*if (hitState == HIT_HIT)
 	{
 		attackPosition = position;

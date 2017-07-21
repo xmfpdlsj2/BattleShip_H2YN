@@ -36,3 +36,11 @@ enum EDirection
 	DIR_DOWN,
 	DIR_NONE_MAX,
 };
+
+enum EChaseCase
+{
+	SEEK,
+	FIRST_HIT,
+	CHASE_SEEK,
+	CHASE_FIRE,
+};
