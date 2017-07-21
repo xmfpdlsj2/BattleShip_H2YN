@@ -43,6 +43,7 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 	EChaseCase CurrentChaseCase = SEEK;
 	CurrentChaseCase = chaseCase;
 	
+	static int chaseDir = 0;
 
 	switch (chaseCase)
 	{
@@ -59,35 +60,23 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
 
 				if (fireCheck == HIT_NONE)
-					return attackPosition;
+					chaseDir = i;
+					return temp;
 			}
 		}
 		break;
 	case CHASE_SEEK:
+		attackPosition = position + DIR_ARRAY[chaseDir];
+		if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
+		{
+			return attackPosition;
+		}
 		break;
 	case CHASE_DESTROY:
 		break;
 	default:
 		break;
 	}
-	/*if (hitState == HIT_HIT)
-	{
-		attackPosition = position;
-
-		for (int i = 0; i < DIR_NONE_MAX; i++)
-		{
-			attackPosition = attackPosition + DIR_ARRAY[i];
-			if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
-			{
-				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
-
-				if (fireCheck == HIT_NONE)
-					return attackPosition;
-			}
-			
-		}		
-
-	}*/
 
 	attackPosition.x = rand() % 8 + '1';
 	attackPosition.y = rand() % 8 + 'A';
@@ -123,6 +112,10 @@ EChaseCase CPlayer::SelectChaseCase(EHitState hitState, EChaseCase chaseCase)
 			CurrentChaseCase = FIRST_HIT;
 		}
 		else if (CurrentChaseCase == FIRST_HIT)
+		{
+			CurrentChaseCase = CHASE_SEEK;
+		}
+		else if (CurrentChaseCase == CHASE_SEEK)
 		{
 			CurrentChaseCase = CHASE_SEEK;
 		}
