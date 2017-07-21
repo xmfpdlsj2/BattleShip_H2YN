@@ -42,5 +42,5 @@ enum EChaseCase
 	SEEK,
 	FIRST_HIT,
 	CHASE_SEEK,
-	CHASE_FIRE,
+	CHASE_DESTROY,
 };

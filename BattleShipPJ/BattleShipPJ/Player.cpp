@@ -65,7 +65,7 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 		break;
 	case CHASE_SEEK:
 		break;
-	case CHASE_FIRE:
+	case CHASE_DESTROY:
 		break;
 	default:
 		break;
@@ -112,6 +112,10 @@ EChaseCase CPlayer::SelectChaseCase(EHitState hitState, EChaseCase chaseCase)
 	case HIT_NONE:
 		break;
 	case HIT_MISS:
+		if (CurrentChaseCase == FIRST_HIT)
+		{
+			CurrentChaseCase = FIRST_HIT;
+		}
 		break;
 	case HIT_HIT:
 		if (CurrentChaseCase == SEEK)
