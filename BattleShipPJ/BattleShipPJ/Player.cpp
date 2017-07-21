@@ -35,16 +35,33 @@ void CPlayer::PlaceShip()
 	}
 }
 
-Position CPlayer::GetAttackPosition(Position position,EHitState hitState)
+Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseCase chaseCase)
 {
 	Position attackPosition;
+	Position temp;
 	EHitState fireCheck = HIT_NONE;
+	EChaseCase CurrentChaseCase = SEEK;
+	CurrentChaseCase = chaseCase;
+	
 
-	switch (EChaseCase chaseCase = SEEK)
+	switch (chaseCase)
 	{
 	case SEEK:
 		break;
 	case FIRST_HIT:
+		attackPosition = position;
+
+		for (int i = 0; i < DIR_NONE_MAX; i++)
+		{
+			temp = attackPosition + DIR_ARRAY[i];
+			if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
+			{
+				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
+
+				if (fireCheck == HIT_NONE)
+					return attackPosition;
+			}
+		}
 		break;
 	case CHASE_SEEK:
 		break;
@@ -82,14 +99,58 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState)
 		return attackPosition;
 	}
 		
-	return GetAttackPosition(position, hitState);
+	return GetAttackPosition(position, hitState, chaseCase);
+}
+
+EChaseCase CPlayer::SelectChaseCase(EHitState hitState, EChaseCase chaseCase)
+{
+	EChaseCase CurrentChaseCase = SEEK;
+	CurrentChaseCase = chaseCase;
+
+	switch (hitState)
+	{
+	case HIT_NONE:
+		break;
+	case HIT_MISS:
+		break;
+	case HIT_HIT:
+		if (CurrentChaseCase == SEEK)
+		{
+			CurrentChaseCase = FIRST_HIT;
+		}
+		else if (CurrentChaseCase == FIRST_HIT)
+		{
+			CurrentChaseCase = CHASE_SEEK;
+		}
+		break;
+	case HIT_DESTROY:
+		CurrentChaseCase = SEEK;
+		break;
+	case HIT_DESTROY_AIRCRAFT_CARRIER:
+		CurrentChaseCase = SEEK;
+		break;
+	case HIT_DESTROY_BATTLESHIP:
+		CurrentChaseCase = SEEK;
+		break;
+	case HIT_DESTROY_CRUISER:
+		CurrentChaseCase = SEEK;
+		break;
+	case HIT_DESTROY_DESTROYER:
+		CurrentChaseCase = SEEK;
+		break;
+	case HIT_DESTROY_SUBMARINE:
+		CurrentChaseCase = SEEK;
+		break;
+	default:
+		break;
+	}
+	return chaseCase;
 }
 
 EHitState CPlayer::OnHitResult(Position position, EHitState hitResult)
 {
 
-	m_PlayerHitCheckBoard.SetMapHitState(position.x, position.y,hitResult);
-	
+	m_PlayerHitCheckBoard.SetMapHitState(position.x, position.y,hitResult);	
 
 	return hitResult;
 }

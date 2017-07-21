@@ -20,15 +20,17 @@ void CGameManager::Start()
 {
 	Position attackPosition = Position (0,0);
 	EHitState hitState = HIT_NONE;
+	EChaseCase chaseCase = SEEK;
 	int turnCount = 0;
 
 	m_Defender.PlaceShip();
 
 	while (m_Defender.GameEndCheck())
 	{
-		attackPosition = m_Attacker.GetAttackPosition(attackPosition, hitState);
+		attackPosition = m_Attacker.GetAttackPosition(attackPosition, hitState,chaseCase);
 		hitState = m_Defender.DeffendHitCheck(attackPosition);
 		m_Attacker.OnHitResult(attackPosition, hitState);
+		chaseCase = m_Attacker.SelectChaseCase(hitState, chaseCase);
 
 		turnCount++;
 		printf_s("turn: %d, HitPosition: %c : %c, HitResult : %d\n", turnCount, (char)attackPosition.x, (char)attackPosition.y,hitState);
