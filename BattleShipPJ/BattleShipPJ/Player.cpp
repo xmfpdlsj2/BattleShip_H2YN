@@ -37,13 +37,14 @@ void CPlayer::PlaceShip()
 
 Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseCase chaseCase)
 {
-	Position attackPosition;
+	static Position attackPosition;
 	Position temp;
 	EHitState fireCheck = HIT_NONE;
 	EChaseCase CurrentChaseCase = SEEK;
 	CurrentChaseCase = chaseCase;
 	
-	static int chaseDir = 0;
+	static int chaseDir;
+	//std::cout << "chaseDir : " << chaseDir << std::endl;
 
 	switch (chaseCase)
 	{
@@ -55,21 +56,47 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 		for (int i = 0; i < DIR_NONE_MAX; i++)
 		{
 			temp = attackPosition + DIR_ARRAY[i];
-			if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
+			if (temp.x <= '8' && temp.y <= 'H'
+				&& temp.x > '1' && temp.y > 'A')
 			{
-				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(attackPosition.x, attackPosition.y);
+				fireCheck = m_PlayerHitCheckBoard.GetMapHitState(temp.x, temp.y);
 
 				if (fireCheck == HIT_NONE)
+				{
 					chaseDir = i;
 					return temp;
+				}
 			}
 		}
 		break;
 	case CHASE_SEEK:
-		attackPosition = position + DIR_ARRAY[chaseDir];
-		if (attackPosition.x <= '8' && attackPosition.y <= 'H' && attackPosition.x > '1' && attackPosition.y > 'A')
+		temp = position + DIR_ARRAY[chaseDir];
+		if (temp.x <= '8' && temp.y <= 'H'
+			&& temp.x >= '1' && temp.y >= 'A')
 		{
-			return attackPosition;
+			return temp;
+		}
+		else
+		{
+			switch ((EDirection)chaseDir)
+			{
+			case DIR_RIGHT:
+				chaseDir = DIR_LEFT;
+				break;
+			case DIR_LEFT:
+				chaseDir = DIR_RIGHT;
+				break;
+			case DIR_UP:
+				chaseDir = DIR_DOWN;
+				break;
+			case DIR_DOWN:
+				chaseDir = DIR_UP;
+				break;
+			default:
+				break;
+			}
+			temp = attackPosition + DIR_ARRAY[chaseDir];
+			return temp;
 		}
 		break;
 	case CHASE_DESTROY:
@@ -93,55 +120,51 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 
 EChaseCase CPlayer::SelectChaseCase(EHitState hitState, EChaseCase chaseCase)
 {
-	EChaseCase CurrentChaseCase = SEEK;
-	CurrentChaseCase = chaseCase;
+	EChaseCase currentChaseCase = SEEK;
+	currentChaseCase = chaseCase;
 
 	switch (hitState)
 	{
 	case HIT_NONE:
 		break;
 	case HIT_MISS:
-		if (CurrentChaseCase == FIRST_HIT)
+		if (currentChaseCase == FIRST_HIT)
 		{
-			CurrentChaseCase = FIRST_HIT;
+			currentChaseCase = FIRST_HIT;
 		}
 		break;
 	case HIT_HIT:
-		if (CurrentChaseCase == SEEK)
+		if (currentChaseCase == SEEK)
 		{
-			CurrentChaseCase = FIRST_HIT;
+			currentChaseCase = FIRST_HIT;
 		}
-		else if (CurrentChaseCase == FIRST_HIT)
+		else if (currentChaseCase == FIRST_HIT || currentChaseCase == CHASE_SEEK)
 		{
-			CurrentChaseCase = CHASE_SEEK;
-		}
-		else if (CurrentChaseCase == CHASE_SEEK)
-		{
-			CurrentChaseCase = CHASE_SEEK;
+			currentChaseCase = CHASE_SEEK;
 		}
 		break;
 	case HIT_DESTROY:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	case HIT_DESTROY_AIRCRAFT_CARRIER:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	case HIT_DESTROY_BATTLESHIP:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	case HIT_DESTROY_CRUISER:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	case HIT_DESTROY_DESTROYER:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	case HIT_DESTROY_SUBMARINE:
-		CurrentChaseCase = SEEK;
+		currentChaseCase = SEEK;
 		break;
 	default:
 		break;
 	}
-	return chaseCase;
+	return currentChaseCase;
 }
 
 EHitState CPlayer::OnHitResult(Position position, EHitState hitResult)
