@@ -19,7 +19,7 @@ public:
 	EChaseCase SelectChaseCase(EHitState hitState, EChaseCase chaseCase);
 	EHitState OnHitResult(Position position,EHitState hitresult);
 
-	EHitState DeffendHitCheck(Position hitposition);
+	EHitState DefendHitCheck(Position hitposition);
 
 	bool GameEndCheck();
 	void PrintShipVector();

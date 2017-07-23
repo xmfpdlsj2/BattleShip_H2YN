@@ -28,7 +28,7 @@ void CGameManager::Start()
 	while (m_Defender.GameEndCheck())
 	{
 		attackPosition = m_Attacker.GetAttackPosition(attackPosition, hitState,chaseCase);
-		hitState = m_Defender.DeffendHitCheck(attackPosition);
+		hitState = m_Defender.DefendHitCheck(attackPosition);
 		m_Attacker.OnHitResult(attackPosition, hitState);
 		chaseCase = m_Attacker.SelectChaseCase(hitState, chaseCase);
 

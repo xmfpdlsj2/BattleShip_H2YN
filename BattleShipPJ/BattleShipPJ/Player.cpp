@@ -38,23 +38,22 @@ void CPlayer::PlaceShip()
 Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseCase chaseCase)
 {
 	static Position attackPosition;
+	static int chaseDir;
+
 	Position temp;
 	EHitState fireCheck = HIT_NONE;
 	EChaseCase CurrentChaseCase = SEEK;
 	CurrentChaseCase = chaseCase;
-	
-	static int chaseDir;
-	//std::cout << "chaseDir : " << chaseDir << std::endl;
 
 	switch (chaseCase)
 	{
-	case SEEK:
+	case SEEK: // hit 나올때까지 랜덤으로 찾는거
 		break;
-	case FIRST_HIT:
+	case FIRST_HIT: // miss 나다가 처음으로 hit 나왔을 때
 		attackPosition = position;
 				
-		//break;
-	case CHASE_SEEK:
+		//break; //first hit일 때에도 chase seek을 해야해서
+	case CHASE_SEEK: // hit상태였다가 miss 나올때 방향 바꿔줌
 		for (int i = 0; i < DIR_NONE_MAX; i++)
 		{
 			temp = attackPosition + DIR_ARRAY[i];
@@ -71,7 +70,7 @@ Position CPlayer::GetAttackPosition(Position position,EHitState hitState,EChaseC
 			}
 		}
 		break;
-	case CHASE_DESTROY:
+	case CHASE_DESTROY: // hit상태였다가 또 hit이 됐을 때 (범위가 넘어가면 반대 방향으로 바꿈)
 		temp = position + DIR_ARRAY[chaseDir];
 		if (temp.x <= '8' && temp.y <= 'H'
 			&& temp.x >= '1' && temp.y >= 'A')
@@ -132,11 +131,7 @@ EChaseCase CPlayer::SelectChaseCase(EHitState hitState, EChaseCase chaseCase)
 	case HIT_NONE:
 		break;
 	case HIT_MISS:
-		if (currentChaseCase == FIRST_HIT)
-		{
-			currentChaseCase = CHASE_SEEK;
-		}
-		else if (currentChaseCase == CHASE_DESTROY)
+		if (currentChaseCase == FIRST_HIT || currentChaseCase == CHASE_DESTROY)
 		{
 			currentChaseCase = CHASE_SEEK;
 		}
@@ -183,7 +178,7 @@ EHitState CPlayer::OnHitResult(Position position, EHitState hitResult)
 	return hitResult;
 }
 
-EHitState CPlayer::DeffendHitCheck(Position hitposition)
+EHitState CPlayer::DefendHitCheck(Position hitposition)
 {
 	EHitState hitState;
 
